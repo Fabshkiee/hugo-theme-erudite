@@ -1,15 +1,87 @@
 {{ define "main" }}
-<div class="prose" style="max-width: var(--measure);">
-    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-        {{ with .Site.Params.author.avatar }}
-            <img src="{{ . }}" alt="{{ $.Site.Params.author.name }}" style="width: 3rem; height: 3rem; border-radius: 50%; object-fit: cover; margin: 0;">
-        {{ end }}
-        <div style="display: flex; flex-direction: column; gap: 0.125rem;">
-            <div style="font-weight: 450; font-size: 1.125rem;">{{ .Site.Params.author.name }}</div>
-            <div style="color: var(--muted-foreground); font-size: 0.875rem;">{{ .Site.Params.author.role }}</div>
-        </div>
+<style>
+  @media screen and (width >= 64rem) {
+    page-content {
+      grid-column: 3 / 13 !important; /* Spans the remaining empty right space */
+    }
+  }
+</style>
+<div
+  style="
+    width: 100%;
+    box-sizing: border-box;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 16rem);
+  "
+>
+  <div
+    style="
+      max-width: 38rem;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    "
+  >
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+      "
+    >
+      {{ with .Site.Params.author.avatar }}
+      <img
+        src="{{ . }}"
+        alt="{{ $.Site.Params.author.name }}"
+        style="
+          width: 6rem;
+          height: 6rem;
+          border-radius: 50%;
+          object-fit: cover;
+          margin: 0;
+        "
+      />
+      {{ end }}
+
+      <div style="display: flex; flex-direction: column; gap: 0.25rem">
+        <h1
+          style="
+            font-weight: 600;
+            font-size: 2rem;
+            letter-spacing: -0.02em;
+            margin: 0;
+            line-height: 1.1;
+          "
+        >
+          {{ .Site.Params.author.name }}
+        </h1>
+        <p
+          style="
+            color: var(--muted-foreground);
+            font-size: 1.125rem;
+            margin: 0;
+            line-height: 1.2;
+          "
+        >
+          {{ .Site.Params.author.role }}
+        </p>
+      </div>
     </div>
-    
-    {{ .Content }}
+
+    <div
+      class="prose"
+      style="width: 100%; font-size: 1.125rem; line-height: 1.6; margin: 0"
+    >
+      {{ .Content }}
+    </div>
+  </div>
 </div>
 {{ end }}
