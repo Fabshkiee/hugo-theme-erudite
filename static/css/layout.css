@@ -170,3 +170,31 @@ ul.post-list li:last-child { border-bottom: none; }
 ul.post-list .post-year { color: var(--muted-foreground); font-size: 0.9375rem; font-family: var(--font-mono); }
 ul.post-list .post-title { text-decoration: none; font-weight: 500; color: var(--foreground); }
 ul.post-list .post-tags { color: var(--muted-foreground); text-align: right; font-family: var(--font-mono); font-size: 0.875rem; display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap; }
+
+/* Tag Filters */
+.tag-filters {
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.tag-filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted-foreground);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.tag-filter-btn:hover {
+    border-color: var(--muted-foreground);
+    color: var(--foreground);
+}
+.tag-filter-btn.active {
+    background: var(--foreground);
+    color: var(--background);
+    border-color: var(--foreground);
+}

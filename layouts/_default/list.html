@@ -1,43 +1,123 @@
 {{ define "main" }}
-<div class="prose" style="max-width: var(--measure); margin-bottom: 3rem;">
+<div class="prose" style="max-width: var(--measure); margin-bottom: 2rem;">
     <h1 style="margin-top: 0;">{{ .Title }}</h1>
     {{ if .Content }}
         {{ .Content }}
     {{ end }}
 </div>
 
+{{ $tags := slice }}
+{{ range .Pages }}
+  {{ range .Params.tags }}
+    {{ $tags = $tags | append (lower .) }}
+  {{ end }}
+{{ end }}
+{{ $tags = $tags | uniq | sort }}
+
+{{ if $tags }}
+<div class="tag-filters" style="margin-bottom: 2.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+  <button class="tag-filter-btn active" data-tag="all">All</button>
+  {{ range $tags }}
+  <button class="tag-filter-btn" data-tag="{{ . }}">{{ . }}</button>
+  {{ end }}
+</div>
+{{ end }}
+
 <div class="blog-list">
     {{ $pinned := where .Pages "Params.pinned" true }}
     {{ $unpinned := where .Pages "Params.pinned" "ne" true }}
 
     {{ if $pinned }}
-    <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; font-size: 0.875rem; font-weight: 500; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em;">Pinned</h3>
-    <ul class="post-list">
-        {{ range $pinned }}
-        <li>
-            <span class="post-year">{{ .Date.Format "Jan 2" }}</span>
-            <a href="{{ .RelPermalink }}" class="post-title">{{ .Title }}</a>
-            <span class="post-tags">
-                {{ range .Params.tags }}<span>{{ . | lower }}</span>{{ end }}
-            </span>
-        </li>
-        {{ end }}
-    </ul>
+    <div class="post-group">
+        <h3 class="post-group-header" style="margin-top: 1rem; margin-bottom: 1rem; font-size: 0.875rem; font-weight: 500; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em;">Pinned</h3>
+        <ul class="post-list">
+            {{ range $pinned }}
+            <li class="filterable-post" data-tags="{{ if .Params.tags }}{{ delimit (apply .Params.tags "lower" ".") "," }}{{ end }}">
+                <span class="post-year">{{ .Date.Format "Jan 2" }}</span>
+                <a href="{{ .RelPermalink }}" class="post-title">{{ .Title }}</a>
+                <span class="post-tags">
+                    {{ range .Params.tags }}<span>{{ . | lower }}</span>{{ end }}
+                </span>
+            </li>
+            {{ end }}
+        </ul>
+    </div>
     {{ end }}
 
     {{ range $unpinned.GroupByDate "2006" }}
-    <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; font-size: 0.875rem; font-weight: 500; font-family: var(--font-mono); letter-spacing: 0.05em;">{{ .Key }}</h3>
-    <ul class="post-list">
-        {{ range .Pages }}
-        <li>
-            <span class="post-year">{{ .Date.Format "Jan 2" }}</span>
-            <a href="{{ .RelPermalink }}" class="post-title">{{ .Title }}</a>
-            <span class="post-tags">
-                {{ range .Params.tags }}<span>{{ . | lower }}</span>{{ end }}
-            </span>
-        </li>
-        {{ end }}
-    </ul>
+    <div class="post-group">
+        <h3 class="post-group-header" style="margin-top: 2.5rem; margin-bottom: 1rem; font-size: 0.875rem; font-weight: 500; font-family: var(--font-mono); letter-spacing: 0.05em;">{{ .Key }}</h3>
+        <ul class="post-list">
+            {{ range .Pages }}
+            <li class="filterable-post" data-tags="{{ if .Params.tags }}{{ delimit (apply .Params.tags "lower" ".") "," }}{{ end }}">
+                <span class="post-year">{{ .Date.Format "Jan 2" }}</span>
+                <a href="{{ .RelPermalink }}" class="post-title">{{ .Title }}</a>
+                <span class="post-tags">
+                    {{ range .Params.tags }}<span>{{ . | lower }}</span>{{ end }}
+                </span>
+            </li>
+            {{ end }}
+        </ul>
+    </div>
     {{ end }}
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const filterBtns = document.querySelectorAll('.tag-filter-btn');
+    const posts = document.querySelectorAll('.filterable-post');
+    const groups = document.querySelectorAll('.post-group');
+    let activeTags = new Set();
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tag = btn.getAttribute('data-tag');
+            
+            if (tag === 'all') {
+                activeTags.clear();
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            } else {
+                document.querySelector('.tag-filter-btn[data-tag="all"]').classList.remove('active');
+                if (activeTags.has(tag)) {
+                    activeTags.delete(tag);
+                    btn.classList.remove('active');
+                } else {
+                    activeTags.add(tag);
+                    btn.classList.add('active');
+                }
+                
+                if (activeTags.size === 0) {
+                    document.querySelector('.tag-filter-btn[data-tag="all"]').classList.add('active');
+                }
+            }
+
+            updateVisibility();
+        });
+    });
+
+    function updateVisibility() {
+        posts.forEach(post => {
+            const postTags = (post.getAttribute('data-tags') || '').split(',').map(t => t.trim()).filter(Boolean);
+            if (activeTags.size === 0) {
+                post.style.display = '';
+            } else {
+                // OR logic: show post if it has ANY of the active tags
+                const hasMatch = Array.from(activeTags).some(t => postTags.includes(t));
+                post.style.display = hasMatch ? '' : 'none';
+            }
+        });
+
+        // Hide empty groups
+        groups.forEach(group => {
+            const visiblePosts = group.querySelectorAll('.filterable-post:not([style*="display: none"])');
+            if (visiblePosts.length === 0) {
+                group.style.display = 'none';
+            } else {
+                group.style.display = '';
+            }
+        });
+    }
+});
+</script>
 {{ end }}
