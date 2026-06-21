@@ -1,0 +1,26 @@
+<div style="position: sticky; top: var(--page-offset-top); font-size: 0.875rem; color: var(--muted-foreground);">
+    <div style="margin-bottom: 1rem; font-weight: 500; color: var(--foreground); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Table of Contents</div>
+    {{ .TableOfContents }}
+</div>
+
+<style>
+    #TableOfContents ul {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    #TableOfContents ul ul {
+        padding-left: 1rem;
+        margin-top: 0.5rem;
+    }
+    #TableOfContents a {
+        color: inherit;
+        text-decoration: none;
+    }
+    #TableOfContents a:hover {
+        color: var(--foreground);
+    }
+</style>

@@ -1,0 +1,129 @@
+:root {
+  --step--1: clamp(0.8889rem, 0.8709rem + 0.0877vw, 0.9375rem);
+  --step-0: clamp(1rem, 0.9538rem + 0.2255vw, 1.125rem);
+  --step-1: clamp(1.125rem, 1.0418rem + 0.4059vw, 1.35rem);
+  --step-2: clamp(1.2656rem, 1.1346rem + 0.6392vw, 1.62rem);
+  --step-3: clamp(1.4238rem, 1.2315rem + 0.9383vw, 1.944rem);
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 450;
+
+  --tracking-tight: -0.015em;
+  --leading-offset: 0.65rem;
+
+  --prose-foreground: rgb(180, 180, 180);
+  --prose-marker:     color-mix(in oklab, var(--foreground) 30%, transparent);
+
+  --measure: 40rem;
+
+  --font-sans: "IBM Plex Sans", "IBM Plex Sans Fallback", sans-serif;
+  --font-mono: "IBM Plex Mono", "IBM Plex Mono Fallback", monospace;
+  --font-math: "STIX Two Math", math;
+}
+
+*,
+::before,
+::after,
+::backdrop,
+::file-selector-button {
+  letter-spacing: var(--tracking-tight);
+}
+
+body {
+  font-family: var(--font-sans);
+  text-wrap: pretty;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: var(--underline, transparent);
+  text-decoration-thickness: max(1px, 0.0625em);
+  text-decoration-skip-ink: none;
+  text-underline-position: under;
+  text-underline-offset: -0.06em;
+}
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+.prose {
+  display: block;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--foreground);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+  max-width: 570px;
+}
+
+.prose > :first-child { margin-block-start: 0; }
+.prose > :last-child { margin-block-end: 0; }
+.prose :is(p, li) { color: var(--prose-foreground); }
+.prose :where(p, ul, ol, blockquote, pre, table, figure, hr, details) {
+  margin-block: 0 1em;
+}
+
+html { font-size: 15px; }
+
+.prose :is(h1, h2, h3, h4, h5, h6) {
+    margin-block: 1.5em 0.5em;
+    font-weight: 400;
+    line-height: calc(var(--leading-offset) + 1em);
+    color: var(--foreground);
+    text-wrap: balance;
+}
+
+.prose hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+}
+
+.prose h1 { font-size: var(--step-2); }
+.prose h2 { font-size: var(--step-1); }
+.prose h3 { font-size: var(--step-0); }
+.prose h4 { font-size: var(--step--1); }
+.prose :is(h5, h6) { font-size: var(--step--1); }
+
+.prose a {
+    --underline: var(--muted-foreground);
+    color: var(--foreground);
+}
+
+.prose :is(strong, b) {
+    color: var(--foreground);
+    font-weight: 500;
+}
+
+.prose :is(em, i) {
+    font-style: italic;
+}
+
+.prose :where(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 0.1em 0.3em;
+    border-radius: 4px;
+    background-color: color-mix(in oklab, var(--muted) 60%, transparent);
+}
+
+.prose pre {
+    padding: 1em;
+    border-radius: 8px;
+    background-color: var(--muted) !important;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+}
+
+.prose pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+.prose img {
+    border-radius: 8px;
+    width: 100%;
+}

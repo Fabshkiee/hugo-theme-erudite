@@ -1,0 +1,28 @@
+{{ define "main" }}
+<article style="max-width: var(--measure);">
+    <header style="margin-bottom: 2rem;">
+        <h1 style="font-size: var(--step-3); font-weight: 600; margin-bottom: 1rem; line-height: 1.2;">{{ .Title }}</h1>
+        <div style="display: flex; gap: 0.5rem; align-items: center; font-size: 0.875rem; color: var(--muted-foreground); font-family: var(--font-mono);">
+            {{ with .Site.Params.author.name }}<span>{{ . }}</span>{{ end }}
+            <span>&bull;</span>
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+            {{ if .Params.tags }}
+                <span>&bull;</span>
+                <div>
+                    {{ range .Params.tags }}
+                        <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" style="color: inherit; text-decoration: none; margin-right: 0.5rem;">#{{ . | lower }}</a>
+                    {{ end }}
+                </div>
+            {{ end }}
+        </div>
+    </header>
+
+    {{ if .Params.image }}
+        <img src="{{ .Params.image | relURL }}" alt="{{ .Title }}" style="width: 100%; border-radius: 8px; margin-bottom: 2rem; object-fit: cover; aspect-ratio: 16/9;">
+    {{ end }}
+
+    <div class="prose">
+        {{ .Content }}
+    </div>
+</article>
+{{ end }}

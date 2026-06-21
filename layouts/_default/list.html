@@ -1,0 +1,22 @@
+{{ define "main" }}
+<div class="prose" style="max-width: var(--measure); margin-bottom: 3rem;">
+    <h1 style="margin-top: 0;">{{ .Title }}</h1>
+    {{ if .Content }}
+        {{ .Content }}
+    {{ end }}
+</div>
+
+<ul class="post-list">
+    {{ range .Pages.ByDate.Reverse }}
+    <li>
+        <span class="post-year">{{ .Date.Format "2006" }}</span>
+        <a href="{{ .RelPermalink }}" class="post-title">{{ .Title }}</a>
+        <span class="post-tags">
+            {{ range .Params.tags }}
+                {{ . | title }} 
+            {{ end }}
+        </span>
+    </li>
+    {{ end }}
+</ul>
+{{ end }}

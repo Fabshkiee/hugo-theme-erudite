@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Locale | default "en-us" }}" dir="ltr">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  <page-grid>
+    <page-header>
+      <page-nav>
+        {{ partial "sidebar.html" . }}
+      </page-nav>
+      {{ if and .IsPage .TableOfContents (ne .Params.toc false) }}
+        <page-toc>
+          {{ partial "toc.html" . }}
+        </page-toc>
+      {{ end }}
+    </page-header>
+    <page-content>
+      <main>
+        {{ block "main" . }}{{ end }}
+      </main>
+      <page-footer>
+        {{ partial "footer.html" . }}
+      </page-footer>
+    </page-content>
+  </page-grid>
+</body>
+</html>

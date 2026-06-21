@@ -1,0 +1,32 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+<meta name="description" content="{{ .Summary | default .Site.Params.description }}">
+
+<link rel="stylesheet" href="{{ "css/fonts.css" | relURL }}">
+
+<!-- CSS -->
+<link rel="stylesheet" href="{{ "css/reset.css" | relURL }}">
+<link rel="stylesheet" href="{{ "css/color.css" | relURL }}">
+<link rel="stylesheet" href="{{ "css/typography.css" | relURL }}">
+<link rel="stylesheet" href="{{ "css/layout.css" | relURL }}">
+
+<script>
+  // Inline script to prevent FOUC on theme load
+  const theme = (() => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      return localStorage.getItem('theme');
+    }
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
+  })();
+  if (theme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+</script>
+
+<script defer src="/js/theme-toggle.js"></script>

@@ -1,0 +1,100 @@
+<aside data-bar>
+    <sidebar-inner>
+      <a href="{{ "/" | relURL }}" aria-label="{{ .Site.Title }}" style="display: flex; align-items: center; gap: 0.5rem; font-weight: 500; text-decoration: none;">
+        <!-- Simple SVG Logo for demonstration -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hexagon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        <span>{{ .Site.Title }}</span>
+      </a>
+      <nav style="margin-top: 1.5rem;">
+        <ul style="display: flex; flex-direction: column; gap: 0.5rem;">
+          {{ $currentPage := . }}
+          {{ range .Site.Menus.main }}
+            <li>
+              <a href="{{ .URL }}" 
+                 {{ if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}aria-current="page"{{ end }}
+                 style="display: block; color: var(--muted-foreground); text-decoration: none;">
+                {{ .Name }}
+              </a>
+            </li>
+          {{ end }}
+        </ul>
+      </nav>
+    </sidebar-inner>
+    <sidebar-toggle style="display: flex; align-items: center; margin-top: auto; padding-top: 2rem;">
+      <button class="theme-toggle" data-icon-button aria-label="Toggle theme" style="display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 4px; cursor: pointer; border: none; background: transparent;">
+        <!-- Moon Icon -->
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+    </sidebar-toggle>
+</aside>
+
+<style>
+  aside[data-bar] {
+    position: sticky;
+    top: var(--page-offset-top);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100svh - var(--page-offset-top) - var(--page-offset-bottom));
+  }
+  @media (width < 64rem) {
+    aside[data-bar] {
+      position: static;
+      height: auto;
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-s);
+      padding-block: var(--space-2xs);
+      padding-inline: var(--grid-gutter);
+      border-bottom: 2px solid var(--border);
+    }
+    aside[data-bar] sidebar-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    aside[data-bar] nav {
+        margin-top: 0 !important;
+    }
+    aside[data-bar] nav ul {
+      flex-direction: row !important;
+      gap: 1rem !important;
+    }
+    aside[data-bar] sidebar-toggle {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+  }
+
+  nav ul a:hover,
+  nav ul a[aria-current="page"] {
+    color: var(--foreground) !important;
+  }
+
+  html[data-theme="dark"] .icon-moon {
+    display: none;
+  }
+  html[data-theme="light"] .icon-moon {
+      display: block;
+  }
+</style>
+<!-- Add Sun Icon styles via CSS toggle -->
+<style>
+    .theme-toggle::after {
+        content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>');
+        display: none;
+        width: 16px;
+        height: 16px;
+    }
+    html[data-theme="dark"] .theme-toggle::after {
+        display: block;
+    }
+    html[data-theme="light"] .theme-toggle::after {
+        display: none;
+    }
+    .theme-toggle:hover {
+        background-color: var(--muted) !important;
+    }
+</style>
