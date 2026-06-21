@@ -1,6 +1,6 @@
-baseURL = 'https://example.com/'
+baseURL = 'https://fabshkiee.github.io/hugo-theme-erudite/'
 locale = 'en-us'
-title = 'Your Name'
+title = 'Fabshkiee'
 theme = 'hugo-theme-erudite'
 themesDir = '../..'
 
@@ -36,10 +36,10 @@ themesDir = '../..'
 
 [[menu.social]]
   name = "GitHub"
-  url = "https://github.com/yourusername"
+  url = "https://github.com/Fabshkiee"
   weight = 10
 
 [[menu.social]]
   name = "LinkedIn"
-  url = "https://linkedin.com/in/yourusername"
+  url = "https://linkedin.com/in/Fabshkiee"
   weight = 20

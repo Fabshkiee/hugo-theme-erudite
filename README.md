@@ -99,12 +99,12 @@ theme = 'erudite'
 
 [[menu.social]]
   name = "GitHub"
-  url = "https://github.com/yourusername"
+  url = "https://github.com/Fabshkiee"
   weight = 10
 
 [[menu.social]]
   name = "LinkedIn"
-  url = "https://linkedin.com/in/yourusername"
+  url = "https://linkedin.com/in/Fabshkiee"
   weight = 20
 ```
 
