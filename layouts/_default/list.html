@@ -15,9 +15,9 @@
     <ul class="post-list">
         {{ range $pinned }}
         <li>
-            <span class="post-year" style="font-family: var(--font-mono);">{{ .Date.Format "Jan 2" }}</span>
-            <a href="{{ .RelPermalink }}" class="post-title" style="font-weight: 500;">{{ .Title }}</a>
-            <span class="post-tags" style="font-family: var(--font-mono); text-align: right; display: flex; gap: 0.5rem; justify-content: flex-end;">
+            <span class="post-year">{{ .Date.Format "Jan 2" }}</span>
+            <a href="{{ .RelPermalink }}" class="post-title">{{ .Title }}</a>
+            <span class="post-tags">
                 {{ range .Params.tags }}<span>{{ . | lower }}</span>{{ end }}
             </span>
         </li>
@@ -30,9 +30,9 @@
     <ul class="post-list">
         {{ range .Pages }}
         <li>
-            <span class="post-year" style="font-family: var(--font-mono);">{{ .Date.Format "Jan 2" }}</span>
-            <a href="{{ .RelPermalink }}" class="post-title" style="font-weight: 500;">{{ .Title }}</a>
-            <span class="post-tags" style="font-family: var(--font-mono); text-align: right; display: flex; gap: 0.5rem; justify-content: flex-end;">
+            <span class="post-year">{{ .Date.Format "Jan 2" }}</span>
+            <a href="{{ .RelPermalink }}" class="post-title">{{ .Title }}</a>
+            <span class="post-tags">
                 {{ range .Params.tags }}<span>{{ . | lower }}</span>{{ end }}
             </span>
         </li>

@@ -159,9 +159,14 @@ ul.timeline li:last-child { border-bottom: none; }
 ul.timeline .year { font-size: 0.9375rem; color: var(--muted-foreground); padding-top: 0.125rem; }
 ul.timeline .desc { font-size: 1.125rem; color: var(--foreground); line-height: 1.5; }
 ul.post-list { list-style: none; padding: 0; margin: 0; }
-ul.post-list li { display: grid; grid-template-columns: 4.5rem 1fr 1fr; gap: 1.125rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border); align-items: baseline; }
-@media (max-width: 640px) { ul.post-list li { grid-template-columns: 3rem 1fr; gap: 0.5rem; } ul.post-list li .post-tags { display: none; } }
+ul.post-list li { display: grid; grid-template-columns: 4.5rem 1fr auto; gap: 1.125rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border); align-items: baseline; }
+@media (max-width: 640px) { 
+    ul.post-list li { grid-template-columns: 3.5rem 1fr; gap: 0.25rem 0.5rem; } 
+    ul.post-list li .post-year { grid-column: 1; grid-row: 1; }
+    ul.post-list li .post-title { grid-column: 2; grid-row: 1; }
+    ul.post-list li .post-tags { grid-column: 2; grid-row: 2; justify-content: flex-start !important; text-align: left !important; font-size: 0.75rem; } 
+}
 ul.post-list li:last-child { border-bottom: none; }
-ul.post-list .post-year { color: var(--muted-foreground); font-size: 0.9375rem; }
+ul.post-list .post-year { color: var(--muted-foreground); font-size: 0.9375rem; font-family: var(--font-mono); }
 ul.post-list .post-title { text-decoration: none; font-weight: 500; color: var(--foreground); }
-ul.post-list .post-tags { color: var(--muted-foreground); text-align: right; font-family: var(--font-mono); font-size: 0.875rem; }
+ul.post-list .post-tags { color: var(--muted-foreground); text-align: right; font-family: var(--font-mono); font-size: 0.875rem; display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap; }
