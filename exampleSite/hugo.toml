@@ -1,0 +1,45 @@
+baseURL = 'https://example.com/'
+locale = 'en-us'
+title = 'Your Name'
+theme = 'hugo-theme-erudite'
+themesDir = '../..'
+
+[params]
+  description = "Role · Hobbyist · Creator"
+  mainSections = ["blog"]
+
+[params.author]
+  name = "Your Name"
+  role = "Your Role @ Company"
+  avatar = "https://github.com/ghost.png"
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[[menu.main]]
+  identifier = "blog"
+  name = "Blog"
+  url = "/blog/"
+  weight = 10
+
+[[menu.main]]
+  identifier = "projects"
+  name = "Projects"
+  url = "/projects/"
+  weight = 20
+
+[[menu.main]]
+  identifier = "about"
+  name = "About"
+  url = "/about/"
+  weight = 30
+
+[[menu.social]]
+  name = "GitHub"
+  url = "https://github.com/yourusername"
+  weight = 10
+
+[[menu.social]]
+  name = "LinkedIn"
+  url = "https://linkedin.com/in/yourusername"
+  weight = 20
