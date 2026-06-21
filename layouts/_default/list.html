@@ -6,17 +6,38 @@
     {{ end }}
 </div>
 
-<ul class="post-list">
-    {{ range .Pages.ByDate.Reverse }}
-    <li>
-        <span class="post-year">{{ .Date.Format "2006" }}</span>
-        <a href="{{ .RelPermalink }}" class="post-title">{{ .Title }}</a>
-        <span class="post-tags">
-            {{ range .Params.tags }}
-                {{ . | title }} 
-            {{ end }}
-        </span>
-    </li>
+<div class="blog-list">
+    {{ $pinned := where .Pages "Params.pinned" true }}
+    {{ $unpinned := where .Pages "Params.pinned" "ne" true }}
+
+    {{ if $pinned }}
+    <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; font-size: 0.875rem; font-weight: 500; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em;">Pinned</h3>
+    <ul class="post-list">
+        {{ range $pinned }}
+        <li>
+            <span class="post-year" style="font-family: var(--font-mono);">{{ .Date.Format "Jan 2" }}</span>
+            <a href="{{ .RelPermalink }}" class="post-title" style="font-weight: 500;">{{ .Title }}</a>
+            <span class="post-tags" style="font-family: var(--font-mono); text-align: right; display: flex; gap: 0.5rem; justify-content: flex-end;">
+                {{ range .Params.tags }}<span>{{ . | lower }}</span>{{ end }}
+            </span>
+        </li>
+        {{ end }}
+    </ul>
     {{ end }}
-</ul>
+
+    {{ range $unpinned.GroupByDate "2006" }}
+    <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; font-size: 0.875rem; font-weight: 500; font-family: var(--font-mono); letter-spacing: 0.05em;">{{ .Key }}</h3>
+    <ul class="post-list">
+        {{ range .Pages }}
+        <li>
+            <span class="post-year" style="font-family: var(--font-mono);">{{ .Date.Format "Jan 2" }}</span>
+            <a href="{{ .RelPermalink }}" class="post-title" style="font-weight: 500;">{{ .Title }}</a>
+            <span class="post-tags" style="font-family: var(--font-mono); text-align: right; display: flex; gap: 0.5rem; justify-content: flex-end;">
+                {{ range .Params.tags }}<span>{{ . | lower }}</span>{{ end }}
+            </span>
+        </li>
+        {{ end }}
+    </ul>
+    {{ end }}
+</div>
 {{ end }}
