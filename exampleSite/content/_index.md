@@ -8,4 +8,4 @@ Welcome to my portfolio and blog. I enjoy building systems, experimenting with n
 
 ---
 
-This site is my notebook for [practical guides](/blog) and [projects](/projects). When the terminal is closed, you can find out more about me [here](/about).
+This site is my notebook for [practical guides]({{< ref "blog" >}}) and [projects]({{< ref "projects" >}}). When the terminal is closed, you can find out more about me [here]({{< ref "about" >}}).
