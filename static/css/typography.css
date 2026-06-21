@@ -127,3 +127,52 @@ html { font-size: 15px; }
     border-radius: 8px;
     width: 100%;
 }
+
+/* Table Styling */
+.prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2.5rem 0;
+    font-size: 0.95rem;
+}
+
+.prose th,
+.prose td {
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0.5rem;
+    text-align: left;
+}
+
+.prose th {
+    font-weight: 500;
+    color: var(--muted-foreground, #8b949e);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    border-bottom: 2px solid var(--border);
+}
+
+.prose tr:last-child td {
+    border-bottom: none;
+}
+
+/* List Styling */
+.prose ul {
+    list-style-type: disc;
+    padding-inline-start: 1.5em;
+}
+
+.prose ol {
+    list-style-type: decimal;
+    padding-inline-start: 1.5em;
+}
+
+.prose li {
+    padding-left: 0.25rem;
+    margin-block: 0.5em;
+}
+
+.prose li::marker {
+    color: var(--prose-marker);
+}
