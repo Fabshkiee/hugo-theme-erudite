@@ -1,0 +1,12 @@
+name = "Erudite"
+license = "MIT"
+licenselink = "https://github.com/Fabshkiee/hugo-theme-erudite/blob/master/LICENSE"
+description = "A custom dark mode Hugo theme modeled after astro-erudite"
+homepage = "https://github.com/Fabshkiee/hugo-theme-erudite"
+tags = ["blog", "dark", "minimalist", "portfolio"]
+features = ["dark mode", "responsive", "custom CSS"]
+min_version = "0.120.0"
+
+[author]
+  name = "Fabshkiee"
+  homepage = "https://github.com/Fabshkiee"
