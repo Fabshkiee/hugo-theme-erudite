@@ -1,26 +1,179 @@
-<div style="position: sticky; top: var(--page-offset-top); font-size: 0.875rem; color: var(--muted-foreground);">
-    <div style="margin-bottom: 1rem; font-weight: 500; color: var(--foreground); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Table of Contents</div>
+<nav class="erudite-toc" aria-label="Table of contents">
+  <div class="toc-title-desktop">Table of Contents</div>
+  <label class="toc-dropdown-toggle">
+    <input type="checkbox" id="toc-toggle" aria-label="Toggle table of contents">
+    <svg viewBox="0 0 16 16" aria-hidden="true" class="progress-ring">
+      <circle cx="8" cy="8" r="6.5" />
+      <circle cx="8" cy="8" r="6.5" transform="rotate(-90 8 8)" class="progress-circle" />
+    </svg>
+    <toc-current>{{ .Title }}</toc-current>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  </label>
+  <div class="toc-menu">
     {{ .TableOfContents }}
-</div>
+  </div>
+</nav>
 
 <style>
-    #TableOfContents ul {
-        list-style: none;
-        padding-left: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
+  .erudite-toc {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--step--1);
+  }
+
+  .toc-title-desktop {
+    display: none;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--foreground);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  .toc-dropdown-toggle {
+    display: none;
+  }
+
+  .toc-menu {
+    max-height: calc(100svh - var(--page-offset-top) - var(--page-offset-bottom));
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .toc-menu::-webkit-scrollbar { display: none; }
+
+  /* Mobile Styles */
+  @media (max-width: 63.99rem) {
+    .toc-dropdown-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      padding-block: 0.75rem;
+      padding-inline: var(--grid-gutter);
+      border-bottom: 1px solid var(--border);
+      background-color: color-mix(in oklab, var(--background) 90%, transparent);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
-    #TableOfContents ul ul {
-        padding-left: 1rem;
-        margin-top: 0.5rem;
+    .toc-dropdown-toggle input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
     }
-    #TableOfContents a {
-        color: inherit;
-        text-decoration: none;
+    
+    .progress-ring {
+      width: 1em; height: 1em; flex-shrink: 0;
     }
-    #TableOfContents a:hover {
-        color: var(--foreground);
+    .progress-ring circle {
+      fill: none; stroke: var(--border); stroke-width: 2;
     }
+    .progress-ring .progress-circle {
+      stroke: var(--muted-foreground);
+      stroke-dasharray: 40.8407; /* 2 * pi * 6.5 */
+      stroke-dashoffset: 40.8407;
+      transition: stroke-dashoffset 0.1s;
+    }
+
+    toc-current {
+      flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      color: var(--muted-foreground); font-size: 0.875rem;
+    }
+
+    .chevron {
+      width: 1em; height: 1em; flex-shrink: 0; color: var(--muted-foreground);
+      transition: transform 0.2s;
+    }
+
+    .erudite-toc:has(input:checked) .chevron {
+      transform: rotate(180deg);
+    }
+
+    .toc-menu {
+      display: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+      padding-inline: var(--grid-gutter);
+      background-color: color-mix(in oklab, var(--background) 90%, transparent);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .erudite-toc:has(input:checked) .toc-menu {
+      display: block;
+    }
+  }
+
+  /* Desktop Styles */
+  @media (min-width: 64rem) {
+    .erudite-toc {
+      position: sticky;
+      top: var(--page-offset-top);
+    }
+    .toc-title-desktop { display: block; }
+  }
+
+  /* Shared Hugo TOC Styles */
+  #TableOfContents ul {
+    list-style: none; padding-left: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  #TableOfContents > ul { padding-left: 0; }
+  #TableOfContents ul ul { padding-left: 1rem; margin-top: 0.5rem; border-left: 1px solid var(--border); margin-left: 0.25rem; }
+  #TableOfContents a { color: var(--muted-foreground); text-decoration: none; }
+  #TableOfContents a:hover, #TableOfContents a.active { color: var(--foreground); }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const defaultTitle = "{{ .Title }}";
+    const tocCurrent = document.querySelector('toc-current');
+    const progressCircle = document.querySelector('.progress-circle');
+    const links = document.querySelectorAll('#TableOfContents a');
+    
+    // Map links to their target sections
+    const sections = Array.from(links).map(link => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        return document.getElementById(href.substring(1));
+      }
+      return null;
+    }).filter(Boolean);
+
+    function onScroll() {
+      // 1. Update Progress Ring
+      if (progressCircle) {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0;
+        const circumference = 40.8407;
+        progressCircle.style.strokeDashoffset = String(circumference - (scrollPercent * circumference));
+      }
+
+      // 2. Update Current Section Title & Active Links
+      let currentSection = null;
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        // If the section top is above the middle of the viewport, it's active
+        if (rect.top <= window.innerHeight / 3) {
+          currentSection = section;
+        }
+      });
+
+      links.forEach(link => link.classList.remove('active'));
+
+      if (currentSection) {
+        const id = currentSection.getAttribute('id');
+        const activeLink = document.querySelector(`#TableOfContents a[href="#${id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+          if (tocCurrent) tocCurrent.textContent = activeLink.textContent;
+        }
+      } else {
+        if (tocCurrent) tocCurrent.textContent = defaultTitle;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // initialize
+  });
+</script>

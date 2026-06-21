@@ -118,6 +118,7 @@ page-toc {
   grid-row: 1;
 
   @media screen and (width >= 64rem) {
+    display: block;
     position: fixed;
     inset-block: var(--page-offset-top) var(--page-offset-bottom);
     inset-inline-end: var(--grid-edge);
